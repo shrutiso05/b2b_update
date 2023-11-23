@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     phone_number = models.CharField(max_length=15)
     business_email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+    business_email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.business_email

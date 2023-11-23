@@ -3,16 +3,22 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import SignupForm, LoginForm
 from .models import UserProfile
+from django.db import IntegrityError
 
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            password = form.cleaned_data['password']
-            user.password = make_password(password)
-            user.save()
-            return redirect('login')
+            try:
+                user = form.save(commit=False)
+                user.password = make_password(form.cleaned_data['password'])
+                user.save()
+                return redirect('login')
+            except IntegrityError:
+                form.add_error('business_email', 'Email already exists. Please choose another.')
+        else:
+            # Handle invalid form
+            pass
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -32,6 +38,12 @@ def login(request):
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
+
+# authentication/views.py
+
+def home(request):
+    return render(request, 'home.html')
+
 
 
 # Create your views here.
