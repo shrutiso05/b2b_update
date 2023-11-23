@@ -1,4 +1,10 @@
 <!-- authentication/templates/signup.html -->
+{% extends 'account/base.html' %}
+
+{% load allauth %}
+{% load socialaccount %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,3 +27,5 @@
     </div>
 </body>
 </html>
+
+{% endblock %}
